@@ -38,11 +38,12 @@ app.use("/uploads", express.static(path.resolve(__dirname, "uploads")));
 app.use("/api/upload", uploadRoutes);
 
 // Serve built Vite frontend (dist) when present
+// Serve built Vite frontend (dist) when present
 const distPath = path.resolve(__dirname, "dist");
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
 
-  app.get("*", (req, res) => {
+  app.get(/(.*)/, (req, res) => {
     if (req.path.startsWith("/api")) {
       return res.status(404).json({ message: "API route not found" });
     }
